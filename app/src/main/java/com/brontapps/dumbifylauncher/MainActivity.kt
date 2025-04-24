@@ -1,11 +1,11 @@
 package com.brontapps.dumbifylauncher
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -50,22 +50,24 @@ fun MainScreen(modifier: Modifier = Modifier,
         modifier = Modifier.fillMaxSize(),
         color = Color.Black
     ) {
-        Column(modifier = modifier.verticalScroll(rememberScrollState())) {
+        Column(modifier = modifier.verticalScroll(rememberScrollState()).padding(top = 16.dp)) {
             for (app in apps) {
-                AppEntry(name = app.name)
+                AppEntry(appInfo = app)
             }
         }
     }
 }
 
 @Composable
-fun AppEntry(name: String, modifier: Modifier = Modifier) {
+fun AppEntry(appInfo: AppInfo, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     Row (modifier = modifier.fillMaxWidth()){
-        Surface(onClick = { Toast.makeText(context, "Hello", Toast.LENGTH_SHORT).show() }, modifier = modifier.fillMaxWidth(), color = Color.Black) {
+        Surface(onClick = {
+            launchApp(appInfo.packageName, context)
+        }, modifier = modifier.fillMaxWidth(), color = Color.Black) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = name,
+                    text = appInfo.name,
                     modifier = modifier.padding(16.dp),
                     color = Color.White
                 )
@@ -74,26 +76,27 @@ fun AppEntry(name: String, modifier: Modifier = Modifier) {
     }
 }
 
+fun launchApp(packageName: String, context: Context) {
+    val launchIntent: Intent? = context.packageManager.getLaunchIntentForPackage(packageName)
+    launchIntent?.let { context.startActivity(it) }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     DumbifyLauncherTheme {
-        AppEntry("Android")
+        AppEntry(AppInfo("Android", "com.android.yo"))
     }
 }
 
 
-fun getApps(pManager: PackageManager): ArrayList<AppInfo> {
-    val appsList = ArrayList<AppInfo>()
+fun getApps(pManager: PackageManager): List<AppInfo> {
+    //val appsList = ArrayList<AppInfo>()
     val i = Intent(Intent.ACTION_MAIN, null)
     i.addCategory(Intent.CATEGORY_LAUNCHER)
     val allApps: List<ResolveInfo> = pManager.queryIntentActivities(i, PackageManager.MATCH_ALL)
 
-    for (ri in allApps) {
-        val app = AppInfo(name = ri.loadLabel(pManager).toString(), packageName = ri.activityInfo.packageName)
-        Log.i(" Log package ", app.packageName)
-        appsList.add(app)
-    }
-    appsList.sortBy { appInfo -> appInfo.name }
-    return appsList
+    val appsList = allApps.map { ri -> AppInfo(name = ri.loadLabel(pManager).toString(), packageName = ri.activityInfo.packageName) }
+
+    return appsList.sortedBy { appInfo -> appInfo.name.lowercase() }
 }
