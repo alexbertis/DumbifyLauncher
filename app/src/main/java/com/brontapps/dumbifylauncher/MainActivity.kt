@@ -1,6 +1,5 @@
 package com.brontapps.dumbifylauncher
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -30,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.brontapps.dumbifylauncher.ui.theme.DumbifyLauncherTheme
+import java.text.Normalizer
 
 
 class MainActivity : ComponentActivity() {
@@ -58,9 +58,20 @@ class MainActivity : ComponentActivity() {
         i.addCategory(Intent.CATEGORY_LAUNCHER)
         val allApps: List<ResolveInfo> = packageManager.queryIntentActivities(i, PackageManager.MATCH_ALL)
 
-        val appsList = allApps.map { ri -> AppInfo(name = ri.loadLabel(packageManager).toString(), packageName = ri.activityInfo.packageName) }
+        val appsList = allApps
+            .map { ri ->
+                AppInfo(
+                    name = ri.loadLabel(packageManager).toString(),
+                    packageName = ri.activityInfo.packageName
+                )
+            }
+            .filterNot { info ->
+                info.packageName == packageName
+            }
 
-        return appsList.sortedBy { appInfo -> appInfo.name.lowercase() }
+        return appsList.sortedBy { appInfo ->
+            Normalizer.normalize(appInfo.name.lowercase(), Normalizer.Form.NFD)
+        }
     }
 
 }
