@@ -1,5 +1,6 @@
 package com.brontapps.dumbifylauncher
 
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -29,16 +30,43 @@ import com.brontapps.dumbifylauncher.ui.theme.DumbifyLauncherTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val pManager: PackageManager = this.packageManager
 
         setContent {
             DumbifyLauncherTheme {
                 MainScreen(
-                    apps = getApps(pManager),
+                    apps = getApps(),
                     modifier = Modifier.fillMaxSize()
                 )
             }
         }
+
+        if (!Helpers.isAppLauncherDefault(this)) {
+            Helpers.resetPreferredLauncherAndOpenChooser(this)
+        }
+    }
+
+    private fun getApps(): List<AppInfo> {
+        //val appsList = ArrayList<AppInfo>()
+        val i = Intent(Intent.ACTION_MAIN, null)
+        i.addCategory(Intent.CATEGORY_LAUNCHER)
+        val allApps: List<ResolveInfo> = packageManager.queryIntentActivities(i, PackageManager.MATCH_ALL)
+
+        val appsList = allApps.map { ri -> AppInfo(name = ri.loadLabel(packageManager).toString(), packageName = ri.activityInfo.packageName) }
+
+        return appsList.sortedBy { appInfo -> appInfo.name.lowercase() }
+    }
+
+    private fun showLauncherSelection() {
+        val componentName = ComponentName(this, javaClass);
+        packageManager.setComponentEnabledSetting(componentName,
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+            PackageManager.DONT_KILL_APP)
+
+        val intent = Intent(Intent.ACTION_MAIN)
+        intent.addCategory(Intent.CATEGORY_HOME)
+            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        finishAndRemoveTask()
     }
 }
 
@@ -87,16 +115,4 @@ fun GreetingPreview() {
     DumbifyLauncherTheme {
         AppEntry(AppInfo("Android", "com.android.yo"))
     }
-}
-
-
-fun getApps(pManager: PackageManager): List<AppInfo> {
-    //val appsList = ArrayList<AppInfo>()
-    val i = Intent(Intent.ACTION_MAIN, null)
-    i.addCategory(Intent.CATEGORY_LAUNCHER)
-    val allApps: List<ResolveInfo> = pManager.queryIntentActivities(i, PackageManager.MATCH_ALL)
-
-    val appsList = allApps.map { ri -> AppInfo(name = ri.loadLabel(pManager).toString(), packageName = ri.activityInfo.packageName) }
-
-    return appsList.sortedBy { appInfo -> appInfo.name.lowercase() }
 }
