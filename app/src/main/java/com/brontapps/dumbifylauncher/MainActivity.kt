@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.os.Bundle
-import android.util.Log
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -16,12 +16,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.brontapps.dumbifylauncher.ui.theme.DumbifyLauncherTheme
@@ -35,14 +40,16 @@ class MainActivity : ComponentActivity() {
             DumbifyLauncherTheme {
                 MainScreen(
                     apps = getApps(),
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    onConfirmation = {
+                        val intent = Intent(Settings.ACTION_HOME_SETTINGS)
+                        startActivity(intent)
+                    },
+                    isLauncherDefault = Helpers.isAppLauncherDefault(this)
                 )
             }
         }
 
-        if (!Helpers.isAppLauncherDefault(this)) {
-            Helpers.resetPreferredLauncherAndOpenChooser(this)
-        }
     }
 
     private fun getApps(): List<AppInfo> {
@@ -56,32 +63,44 @@ class MainActivity : ComponentActivity() {
         return appsList.sortedBy { appInfo -> appInfo.name.lowercase() }
     }
 
-    private fun showLauncherSelection() {
-        val componentName = ComponentName(this, javaClass);
-        packageManager.setComponentEnabledSetting(componentName,
-            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-            PackageManager.DONT_KILL_APP)
-
-        val intent = Intent(Intent.ACTION_MAIN)
-        intent.addCategory(Intent.CATEGORY_HOME)
-            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
-        finishAndRemoveTask()
-    }
 }
 
 @Composable
-fun MainScreen(modifier: Modifier = Modifier,
-               apps: List<AppInfo> = emptyList()) {
+fun MainScreen(
+    modifier: Modifier = Modifier,
+    apps: List<AppInfo> = emptyList(),
+    onConfirmation: () -> Unit,
+    isLauncherDefault: Boolean
+) {
     // A surface container using the 'background' color from the theme
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color.Black
     ) {
-        Column(modifier = modifier.verticalScroll(rememberScrollState()).padding(top = 16.dp)) {
+        Column(modifier = modifier
+            .verticalScroll(rememberScrollState())
+            .padding(top = 16.dp)) {
             for (app in apps) {
                 AppEntry(appInfo = app)
             }
+        }
+    }
+
+    val openAlertDialog = remember { mutableStateOf((!isLauncherDefault)) }
+
+    // ...
+    when {
+        // ...
+        openAlertDialog.value -> {
+            SettingsAlertDialog(
+                onDismissRequest = { openAlertDialog.value = false },
+                onConfirmation = {
+                    openAlertDialog.value = false
+                    onConfirmation()
+                },
+                dialogTitle = stringResource(R.string.alert_dialog_title),
+                dialogText = stringResource(R.string.alert_dialog_description)
+            )
         }
     }
 }
@@ -103,6 +122,44 @@ fun AppEntry(appInfo: AppInfo, modifier: Modifier = Modifier) {
         }
     }
 }
+@Composable
+fun SettingsAlertDialog(
+    onDismissRequest: () -> Unit,
+    onConfirmation: () -> Unit,
+    dialogTitle: String,
+    dialogText: String,
+) {
+    AlertDialog(
+        title = {
+            Text(text = dialogTitle)
+        },
+        text = {
+            Text(text = dialogText)
+        },
+        onDismissRequest = {
+            onDismissRequest()
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onConfirmation()
+                }
+            ) {
+                Text(stringResource(R.string.alert_dialog_settings_proceed))
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = {
+                    onDismissRequest()
+                }
+            ) {
+                Text(stringResource(R.string.alert_dialog_dismiss))
+            }
+        }
+    )
+}
+
 
 fun launchApp(packageName: String, context: Context) {
     val launchIntent: Intent? = context.packageManager.getLaunchIntentForPackage(packageName)

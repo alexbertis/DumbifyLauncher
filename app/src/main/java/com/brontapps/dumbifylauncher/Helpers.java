@@ -10,18 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Helpers {
-    public static void resetPreferredLauncherAndOpenChooser(Context context) {
-        PackageManager packageManager = context.getPackageManager();
-        ComponentName componentName = new ComponentName(context, LauncherActivity.class);
-        packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-
-        Intent selector = new Intent(Intent.ACTION_MAIN);
-        selector.addCategory(Intent.CATEGORY_HOME);
-        selector.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(selector);
-
-        packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, PackageManager.DONT_KILL_APP);
-    }
 
     /**
      * method checks to see if app is currently set as default launcher
@@ -36,7 +24,7 @@ public class Helpers {
 
         final String myPackageName = context.getPackageName();
         List<ComponentName> activities = new ArrayList<>();
-        final PackageManager packageManager = (PackageManager) context.getPackageManager();
+        final PackageManager packageManager = context.getPackageManager();
 
         packageManager.getPreferredActivities(filters, activities, null);
 

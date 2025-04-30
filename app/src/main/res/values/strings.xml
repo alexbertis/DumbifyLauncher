@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">DumbifyLauncher</string>
     <string name="title_activity_main">Dumbify Launcher</string>
+    <string name="alert_dialog_title">Make this your default launcher</string>
+    <string name="alert_dialog_description">If you click continue, the Home Screen (Launcher) settings will be open so that you can make Dumbify Launcher your default launcher.</string>
+    <string name="alert_dialog_settings_proceed">Go to settings</string>
+    <string name="alert_dialog_dismiss">No, thanks</string>
 </resources>
