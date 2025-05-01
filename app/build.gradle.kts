@@ -11,7 +11,7 @@ android {
         applicationId = "com.brontapps.dumbifylauncher"
         minSdk = 21
         targetSdk = 34
-        versionCode = 3
+        versionCode = 4
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
