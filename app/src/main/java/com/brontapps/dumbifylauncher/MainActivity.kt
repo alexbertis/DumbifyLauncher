@@ -53,7 +53,6 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun getApps(): List<AppInfo> {
-        //val appsList = ArrayList<AppInfo>()
         val i = Intent(Intent.ACTION_MAIN, null)
         i.addCategory(Intent.CATEGORY_LAUNCHER)
         val allApps: List<ResolveInfo> = packageManager.queryIntentActivities(i, PackageManager.MATCH_ALL)
@@ -99,9 +98,7 @@ fun MainScreen(
 
     val openAlertDialog = remember { mutableStateOf((!isLauncherDefault)) }
 
-    // ...
     when {
-        // ...
         openAlertDialog.value -> {
             SettingsAlertDialog(
                 onDismissRequest = { openAlertDialog.value = false },
