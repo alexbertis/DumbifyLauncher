@@ -2,8 +2,10 @@ package com.brontapps.dumbifylauncher
 
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.ComponentActivity
@@ -20,14 +22,18 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.compose.LifecycleStartEffect
 import com.brontapps.dumbifylauncher.ui.theme.DumbifyLauncherTheme
 import java.text.Normalizer
 
@@ -38,8 +44,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             DumbifyLauncherTheme {
-                MainScreen(
-                    apps = getApps(),
+                StatefulScreen(
                     modifier = Modifier.fillMaxSize(),
                     onConfirmation = {
                         val intent = Intent(Settings.ACTION_HOME_SETTINGS)
@@ -55,7 +60,11 @@ class MainActivity : ComponentActivity() {
     private fun getApps(): List<AppInfo> {
         val i = Intent(Intent.ACTION_MAIN, null)
         i.addCategory(Intent.CATEGORY_LAUNCHER)
-        val allApps: List<ResolveInfo> = packageManager.queryIntentActivities(i, PackageManager.MATCH_ALL)
+        val allApps: List<ResolveInfo> = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            packageManager.queryIntentActivities(i, PackageManager.MATCH_ALL)
+        } else {
+            packageManager.queryIntentActivities(i, 0)
+        }
 
         val appsList = allApps
             .map { ri ->
@@ -73,12 +82,55 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+
+    @Composable
+    fun StatefulScreen(
+        modifier: Modifier = Modifier,
+        onConfirmation: () -> Unit,
+        isLauncherDefault: Boolean
+    ) {
+        var currentAppsList by remember { mutableStateOf(getApps()) }
+
+        val appChangesReceiver = remember {
+            AppChangesReceiver {
+                // On apps changed (notified from Broadcast Receiver), get the apps again
+                currentAppsList = getApps()
+            }
+        }
+        val context = LocalContext.current
+        LifecycleStartEffect(true) {
+            val filter = IntentFilter().apply {
+                addAction(Intent.ACTION_PACKAGE_ADDED)
+                addAction(Intent.ACTION_PACKAGE_REMOVED)
+                addAction(Intent.ACTION_PACKAGE_REPLACED)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    addAction(Intent.ACTION_PACKAGES_SUSPENDED)
+                    addAction(Intent.ACTION_PACKAGES_UNSUSPENDED)
+                }
+                addDataScheme("package")
+            }
+
+            ContextCompat.registerReceiver(context, appChangesReceiver, filter,
+                ContextCompat.RECEIVER_EXPORTED
+            )
+            onStopOrDispose { context.unregisterReceiver(appChangesReceiver) }
+        }
+
+        // A surface container using the 'background' color from the theme
+        MainScreen(
+            onConfirmation = onConfirmation,
+            isLauncherDefault = isLauncherDefault,
+            modifier = modifier,
+            apps = currentAppsList
+        )
+    }
+
 }
 
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    apps: List<AppInfo> = emptyList(),
+    apps: List<AppInfo>,
     onConfirmation: () -> Unit,
     isLauncherDefault: Boolean
 ) {
@@ -97,7 +149,6 @@ fun MainScreen(
     }
 
     val openAlertDialog = remember { mutableStateOf((!isLauncherDefault)) }
-
     when {
         openAlertDialog.value -> {
             SettingsAlertDialog(
