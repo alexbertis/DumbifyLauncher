@@ -5,4 +5,5 @@
     <string name="alert_dialog_description">If you click continue, the Home Screen (Launcher) settings will be open so that you can make Dumbify Launcher your default launcher.</string>
     <string name="alert_dialog_settings_proceed">Go to settings</string>
     <string name="alert_dialog_dismiss">No, thanks</string>
+    <string name="refresh_app_list">Refresh app list</string>
 </resources>

@@ -11,8 +11,8 @@ android {
         applicationId = "com.brontapps.dumbifylauncher"
         minSdk = 21
         targetSdk = 34
-        versionCode = 5
-        versionName = "1.0"
+        versionCode = 6
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
