@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DumbifyLauncher</string>
+    <string name="title_activity_main">Dumbify Launcher</string>
+    <string name="alert_dialog_title">Haz que esta sea tu pantalla de inicio por defecto</string>
+    <string name="alert_dialog_description">Si pulsas en el botón de \"Ir a Ajustes\", te llevaremos a la configuración de tu pantalla de inicio para que puedas seleccionar Dumbify Launcher como tu launcher por defecto.</string>
+    <string name="alert_dialog_settings_proceed">Ir a Ajustes</string>
+    <string name="alert_dialog_dismiss">No, gracias</string>
+    <string name="refresh_app_list">Actualizar lista de apps</string>
+</resources>

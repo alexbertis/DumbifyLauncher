@@ -2,7 +2,6 @@ package com.brontapps.dumbifylauncher
 
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.os.Build
@@ -26,14 +25,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.compose.LifecycleStartEffect
 import com.brontapps.dumbifylauncher.ui.theme.DumbifyLauncherTheme
 import java.text.Normalizer
 
@@ -91,38 +89,27 @@ class MainActivity : ComponentActivity() {
     ) {
         var currentAppsList by remember { mutableStateOf(getApps()) }
 
-        val appChangesReceiver = remember {
-            AppChangesReceiver {
-                // On apps changed (notified from Broadcast Receiver), get the apps again
-                currentAppsList = getApps()
-            }
-        }
-        val context = LocalContext.current
-        LifecycleStartEffect(true) {
-            val filter = IntentFilter().apply {
-                addAction(Intent.ACTION_PACKAGE_ADDED)
-                addAction(Intent.ACTION_PACKAGE_REMOVED)
-                addAction(Intent.ACTION_PACKAGE_REPLACED)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    addAction(Intent.ACTION_PACKAGES_SUSPENDED)
-                    addAction(Intent.ACTION_PACKAGES_UNSUSPENDED)
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = Color.Black
+        ) {
+            Column(
+                modifier = modifier.verticalScroll(rememberScrollState())
+            ) {
+                Row (modifier = modifier.fillMaxWidth()){
+                    RefreshAppsButton(onClickAction = {
+                        currentAppsList = getApps()
+                    })
                 }
-                addDataScheme("package")
+
+                MainScreen(
+                    onConfirmation = onConfirmation,
+                    isLauncherDefault = isLauncherDefault,
+                    modifier = modifier,
+                    apps = currentAppsList
+                )
             }
-
-            ContextCompat.registerReceiver(context, appChangesReceiver, filter,
-                ContextCompat.RECEIVER_EXPORTED
-            )
-            onStopOrDispose { context.unregisterReceiver(appChangesReceiver) }
         }
-
-        // A surface container using the 'background' color from the theme
-        MainScreen(
-            onConfirmation = onConfirmation,
-            isLauncherDefault = isLauncherDefault,
-            modifier = modifier,
-            apps = currentAppsList
-        )
     }
 
 }
@@ -134,17 +121,9 @@ fun MainScreen(
     onConfirmation: () -> Unit,
     isLauncherDefault: Boolean
 ) {
-    // A surface container using the 'background' color from the theme
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = Color.Black
-    ) {
-        Column(modifier = modifier
-            .verticalScroll(rememberScrollState())
-            .padding(top = 16.dp)) {
-            for (app in apps) {
-                AppEntry(appInfo = app)
-            }
+    Column(modifier = modifier) {
+        for (app in apps) {
+            AppEntry(appInfo = app)
         }
     }
 
@@ -181,6 +160,26 @@ fun AppEntry(appInfo: AppInfo, modifier: Modifier = Modifier) {
         }
     }
 }
+
+@Composable
+fun RefreshAppsButton(modifier: Modifier = Modifier, onClickAction: () -> Unit) {
+    Surface(
+        onClick = onClickAction,
+        modifier = modifier.fillMaxWidth(),
+        color = Color.Black
+    ) {
+        Column {
+            Text(
+                text = stringResource(R.string.refresh_app_list),
+                modifier = modifier
+                    .padding(16.dp, 10.dp)
+                    .align(Alignment.End),
+                color = Color.White
+            )
+        }
+    }
+}
+
 @Composable
 fun SettingsAlertDialog(
     onDismissRequest: () -> Unit,
