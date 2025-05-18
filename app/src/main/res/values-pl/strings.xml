@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+      
+  <string name="app_name">Wyrzutnia Dumbify</string>
+      
+  <string name="title_activity_main">Program uruchamiający Dumbify</string>
+      
+  <string name="alert_dialog_title">Ustaw to jako domyślny program uruchamiający</string>
+      
+  <string name="alert_dialog_description">Jeśli klikniesz Kontynuuj, zostaną otwarte ustawienia Ekranu głównego (Programu uruchamiającego), dzięki czemu będziesz mógł ustawić Dumbify Launcher jako domyślny program uruchamiający.</string>
+      
+  <string name="alert_dialog_settings_proceed">Przejdź do ustawień</string>
+      
+  <string name="alert_dialog_dismiss">Nie, dziękuję</string>
+      
+  <string name="refresh_app_list">Odśwież listę aplikacji</string>
+  
+</resources>

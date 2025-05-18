@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+      
+  <string name="app_name">Lanceur Dumbify</string>
+      
+  <string name="title_activity_main">Lanceur Dumbify</string>
+      
+  <string name="alert_dialog_title">Faites-en votre lanceur par défaut</string>
+      
+  <string name="alert_dialog_description">Si vous cliquez sur Continuer, les paramètres de l\'écran d\'accueil (lanceur) s\'ouvriront afin que vous puissiez faire de Dumbify Launcher votre lanceur par défaut.</string>
+      
+  <string name="alert_dialog_settings_proceed">Accéder aux paramètres</string>
+      
+  <string name="alert_dialog_dismiss">Non merci</string>
+      
+  <string name="refresh_app_list">Actualiser la liste des applications</string>
+  
+</resources>

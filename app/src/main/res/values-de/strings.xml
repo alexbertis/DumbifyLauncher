@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+      
+  <string name="app_name">DumbifyLauncher</string>
+      
+  <string name="title_activity_main">Dumbify Launcher</string>
+      
+  <string name="alert_dialog_title">Machen Sie dies zu Ihrem Standard-Launcher</string>
+      
+  <string name="alert_dialog_description">Wenn Sie auf „Fortfahren“ klicken, werden die Einstellungen des Startbildschirms (Launcher) geöffnet, sodass Sie Dumbify Launcher zu Ihrem Standard-Launcher machen können.</string>
+      
+  <string name="alert_dialog_settings_proceed">Gehe zu den Einstellungen</string>
+      
+  <string name="alert_dialog_dismiss">Nein danke</string>
+      
+  <string name="refresh_app_list">App-Liste aktualisieren</string>
+  
+</resources>

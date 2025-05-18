@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+      
+  <string name="app_name">Trình khởi chạy Dumbify</string>
+      
+  <string name="title_activity_main">Trình khởi chạy Dumbify</string>
+      
+  <string name="alert_dialog_title">Đặt đây làm trình khởi chạy mặc định của bạn</string>
+      
+  <string name="alert_dialog_description">Nếu bạn nhấp vào tiếp tục, cài đặt Màn hình chính (Trình khởi chạy) sẽ mở ra để bạn có thể đặt Dumbify Launcher làm trình khởi chạy mặc định của mình.</string>
+      
+  <string name="alert_dialog_settings_proceed">Đi đến cài đặt</string>
+      
+  <string name="alert_dialog_dismiss">Không, cảm ơn</string>
+      
+  <string name="refresh_app_list">Làm mới danh sách ứng dụng</string>
+  
+</resources>

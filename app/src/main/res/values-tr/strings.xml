@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+      
+  <string name="app_name">DumbifyBaşlatıcısı</string>
+      
+  <string name="title_activity_main">Dumbify Başlatıcısı</string>
+      
+  <string name="alert_dialog_title">Bunu varsayılan başlatıcınız yapın</string>
+      
+  <string name="alert_dialog_description">Devam butonuna tıkladığınızda Ana Ekran (Başlatıcı) ayarları açılacak ve Dumbify Başlatıcısı\'nı varsayılan başlatıcınız yapabileceksiniz.</string>
+      
+  <string name="alert_dialog_settings_proceed">Ayarlara git</string>
+      
+  <string name="alert_dialog_dismiss">Hayır, teşekkürler</string>
+      
+  <string name="refresh_app_list">Uygulama listesini yenile</string>
+  
+</resources>

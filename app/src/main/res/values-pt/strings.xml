@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+      
+  <string name="app_name">DumbifyLauncher</string>
+      
+  <string name="title_activity_main">Lançador Dumbify</string>
+      
+  <string name="alert_dialog_title">Faça deste o seu inicializador padrão</string>
+      
+  <string name="alert_dialog_description">Se você clicar em continuar, as configurações da Tela Inicial (Inicializador) serão abertas para que você possa tornar o Dumbify Launcher seu iniciador padrão.</string>
+      
+  <string name="alert_dialog_settings_proceed">Vá para as configurações</string>
+      
+  <string name="alert_dialog_dismiss">Não, obrigado</string>
+      
+  <string name="refresh_app_list">Atualizar lista de aplicativos</string>
+  
+</resources>

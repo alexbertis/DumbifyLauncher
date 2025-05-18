@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+      
+  <string name="app_name">덤비파이런처</string>
+      
+  <string name="title_activity_main">덤비파이 런처</string>
+      
+  <string name="alert_dialog_title">이것을 기본 런처로 설정하세요</string>
+      
+  <string name="alert_dialog_description">계속을 클릭하면 홈 화면 (런처) 설정이 열려 Dumbify Launcher를 기본 런처로 설정할 수 있습니다.</string>
+      
+  <string name="alert_dialog_settings_proceed">설정으로 이동</string>
+      
+  <string name="alert_dialog_dismiss">아니요, 고맙습니다</string>
+      
+  <string name="refresh_app_list">앱 목록 새로 고침</string>
+  
+</resources>

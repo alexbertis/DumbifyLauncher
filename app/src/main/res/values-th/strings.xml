@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+      
+  <string name="app_name">DumbifyLauncher</string>
+      
+  <string name="title_activity_main">ตัวเรียกใช้งาน Dumbify</string>
+      
+  <string name="alert_dialog_title">ทำให้นี่เป็นตัวเปิดใช้เริ่มต้นของคุณ</string>
+      
+  <string name="alert_dialog_description">หากคุณคลิกดำเนินการต่อ การตั้งค่าหน้าจอหลัก (ตัวเปิดใช้) จะเปิดขึ้นเพื่อให้คุณตั้งค่า Dumbify Launcher เป็นตัวเปิดใช้เริ่มต้นของคุณได้</string>
+      
+  <string name="alert_dialog_settings_proceed">ไปที่การตั้งค่า</string>
+      
+  <string name="alert_dialog_dismiss">ไม่เป็นไร ขอบคุณ</string>
+      
+  <string name="refresh_app_list">รีเฟรชรายการแอป</string>
+  
+</resources>

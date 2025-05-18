@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+      
+  <string name="app_name">Peluncur Dumbify</string>
+      
+  <string name="title_activity_main">Peluncur Dumbify</string>
+      
+  <string name="alert_dialog_title">Jadikan ini peluncur default Anda</string>
+      
+  <string name="alert_dialog_description">Jika Anda mengeklik Lanjutkan, pengaturan Layar Beranda (Peluncur) akan terbuka sehingga Anda dapat menjadikan Dumbify Launcher sebagai peluncur default Anda.</string>
+      
+  <string name="alert_dialog_settings_proceed">Buka pengaturan</string>
+      
+  <string name="alert_dialog_dismiss">Tidak, terima kasih</string>
+      
+  <string name="refresh_app_list">Segarkan daftar aplikasi</string>
+  
+</resources>

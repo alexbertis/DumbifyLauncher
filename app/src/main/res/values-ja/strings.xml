@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+      
+  <string name="app_name">ダムファイランチャー</string>
+      
+  <string name="title_activity_main">ダムファイランチャー</string>
+      
+  <string name="alert_dialog_title">これをデフォルトのランチャーにする</string>
+      
+  <string name="alert_dialog_description">「続行」をクリックすると、ホーム画面 (ランチャー) 設定が開き、Dumbify Launcher をデフォルトのランチャーにすることができます。</string>
+      
+  <string name="alert_dialog_settings_proceed">設定に移動</string>
+      
+  <string name="alert_dialog_dismiss">結構です</string>
+      
+  <string name="refresh_app_list">アプリリストを更新</string>
+  
+</resources>
