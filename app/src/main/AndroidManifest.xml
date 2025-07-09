@@ -23,6 +23,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.DumbifyLauncher">
             <intent-filter>
@@ -36,7 +37,8 @@
         <activity
             android:name=".LauncherActivity"
             android:enabled="false"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

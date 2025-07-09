@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace = "com.brontapps.dumbifylauncher"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.brontapps.dumbifylauncher"
         minSdk = 21
-        targetSdk = 34
-        versionCode = 7
-        versionName = "1.1.1"
+        targetSdk = 36
+        versionCode = 9
+        versionName = "1.1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
